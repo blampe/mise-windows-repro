@@ -1,0 +1,20 @@
+on:
+  pull_request: {}
+
+jobs:
+  repro:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false      
+      - name: Setup mise
+        uses: jdx/mise-action@v3
+        env:
+          MISE_ENV: test
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          cache_key: "mise-{{platform}}-{{file_hash}}"
+          # also save this cache since we are using a different mise env.
+          cache_save: true
